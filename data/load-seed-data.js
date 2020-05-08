@@ -29,7 +29,7 @@ async function run() {
                     INSERT INTO digimon (digimon_name, digimon_level, digimon_type, digimon_attribute, digimon_attack, appeared_in_anime, owner_id)
                     VALUES ($1, $2, $3, $4, $5, $6, $7);
                 `,
-        [singleDigimon.digimon_name, singleDigimon.digimon_level, singleDigimon.digimon_type, singleDigimon.digimon_attribute, singleDigimon.digimon_attack,  user.id]);
+        [singleDigimon.digimon_name, singleDigimon.digimon_level, singleDigimon.digimon_type, singleDigimon.digimon_attribute, singleDigimon.digimon_attack, singleDigimon.appeared_in_anime,  user.id]);
       })
     );
     
