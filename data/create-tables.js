@@ -19,10 +19,11 @@ async function run() {
                 CREATE TABLE digimon (
                     id SERIAL PRIMARY KEY NOT NULL,
                     digimon_name VARCHAR(512) NOT NULL,
-                    digimon_level VARCHAR(512) NOT NULL,
+                    digimon_level INTEGER NOT NULL,
                     digimon_type VARCHAR(512) NOT NULL,
                     digimon_attribute VARCHAR(512) NOT NULL,
                     digimon_attack VARCHAR(512) NOT NULL,
+                    appeared_in_anime BOOLEAN NOT NULL,
                     owner_id INTEGER NOT NULL REFERENCES users(id)
             );
         `);
