@@ -16,7 +16,7 @@ async function run() {
                     email VARCHAR(256) NOT NULL,
                     hash VARCHAR(512) NOT NULL
                 );           
-                CREATE TABLE animals (
+                CREATE TABLE digimon (
                     id SERIAL PRIMARY KEY NOT NULL,
                     digimon_name VARCHAR(512) NOT NULL,
                     digimon_level VARCHAR(512) NOT NULL,
