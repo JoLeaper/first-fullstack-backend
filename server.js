@@ -1,6 +1,7 @@
 // Auth
 const ensureAuth = require('./lib/auth/ensure-auth');
 const createAuthRoutes = require('./lib/auth/create-auth-routes');
+const request = require('superagent');
 const authRoutes = createAuthRoutes({
   selectUser(email) {
     return client.query(`
@@ -49,9 +50,12 @@ client.connect();
 const PORT = process.env.PORT || 7890;
 
 app.get('/digimon', async(req, res) => {
-  const data = await client.query('SELECT * from digimon');
+  // const data = await client.query('SELECT * from digimon');
+  // res.json(data.rows);
+  const digimonData = await request.get('https://murmuring-beyond-72755.herokuapp.com/');
+  const parsedDigimonData = JSON.parse(digimonData);
+  res.json(parsedDigimonData);
 
-  res.json(data.rows);
 });
 
 app.listen(PORT, () => {
@@ -60,3 +64,21 @@ app.listen(PORT, () => {
 });
 
 module.exports = app;
+
+
+const getLocation = async(citySearched) => {
+  const geoData = await request.get(`https://us1.locationiq.com/v1/search.php?key=${process.env.GEOCODE_API_KEY}&q=${citySearched}&format=json`);
+  return JSON.parse(geoData.text)[0];
+};
+
+
+app.get('/location', (req, res) => {
+
+  getLocation(req.query.search).then((locationObject => {
+      const response = formatObject(locationObject);
+      lat = response.latitude;
+      lon = response.longitude;
+      res.json(response);
+  }));
+
+});
