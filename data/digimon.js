@@ -7,11 +7,24 @@ module.exports = [
     digimon_attack:'Pepper Breath'
   },
   {
-    name: 'jumpy',
-    cool_factor: 4,
+    digimon_name: 'Greymon',
+    digimon_level: 'Champion',
+    digimon_type: 'Dinosaur',
+    digimon_attribute: 'Vaccine',
+    digimon_attack:'Nova Blast'
   },
   {
-    name: 'spot',
-    cool_factor: 10,
-  }
+    digimon_name: 'Metalgreymon',
+    digimon_level: 'Ultimate',
+    digimon_type: 'Cyborg',
+    digimon_attribute: 'Vaccine',
+    digimon_attack: 'Metal Claw'
+  },
+  {
+    digimon_name: 'Agumon',
+    digimon_level: 'Mega',
+    digimon_type: 'Dragon',
+    digimon_attribute: 'Vaccine',
+    digimon_attack:'Terra Force'
+  },
 ];
