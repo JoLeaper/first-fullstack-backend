@@ -23,7 +23,7 @@ const authRoutes = createAuthRoutes({
   }
 });
 
-
+const app = require('./lib/app');
 // setup authentication routes to give user an auth token
 // creates a /signin and a /signup route. 
 // each requires a POST body with a .email and a .password
@@ -44,7 +44,7 @@ const client = require('./lib/client');
 // Initiate database connection
 client.connect();
 
-const app = require('./lib/app');
+
 
 const PORT = process.env.PORT || 7890;
 
