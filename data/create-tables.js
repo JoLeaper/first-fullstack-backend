@@ -23,8 +23,7 @@ async function run() {
                     digimon_type VARCHAR(512) NOT NULL,
                     digimon_attribute VARCHAR(512) NOT NULL,
                     digimon_attack VARCHAR(512) NOT NULL,
-                    appeared_in_anime BOOLEAN NOT NULL,
-                    owner_id INTEGER NOT NULL REFERENCES users(id)
+                    appeared_in_anime BOOLEAN NOT NULL
             );
         `);
 
