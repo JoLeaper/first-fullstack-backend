@@ -14,7 +14,7 @@ app.get('/digimon', async(req, res) => {
 
 app.get('/digimon/:id', async(req, res) => {
   const id = req.params.id;
-  const result = await client.query('SELECT * FROM digimon WHERE digimon_name = $1',
+  const result = await client.query('SELECT * FROM digimon WHERE id = $1',
     [id]);
   res.json(result.rows[0]);
 });
