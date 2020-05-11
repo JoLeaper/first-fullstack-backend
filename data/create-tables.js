@@ -13,8 +13,8 @@ async function run() {
     await client.query(`
                 CREATE TABLE users (
                     id SERIAL PRIMARY KEY,
-                    email VARCHAR(256) NOT NULL,
-                    hash VARCHAR(512) NOT NULL
+                    user_name VARCHAR(256) NOT NULL,
+                    crest VARCHAR(512) NOT NULL
                 );           
                 CREATE TABLE digimon (
                     id SERIAL PRIMARY KEY NOT NULL,
