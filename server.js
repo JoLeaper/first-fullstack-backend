@@ -50,6 +50,18 @@ app.post('/digimon/', async(req, res) => {
   res.json(data.rows[0]);
 });
 
+app.put('/digimon/:id', async(req, res) => {
+  const id = req.params.id;
+  const name = req.body.digimon_name;
+  console.log(id, name);
+  const result = await client.query(`
+  UPDATE digimon
+  SET digimon_name = $1
+  WHERE digimon.id = $2`,
+  [name, id]);
+  res.json(result);
+});
+
 // app.put('/digimon/', async(req, res) => {
 //   const data = await client.query(`
 //                                   INSERT INTO digimon (digimon_name, digimon_level, digimon_type, digimon_attribute, digimon_attack, appeared_in_anime)
