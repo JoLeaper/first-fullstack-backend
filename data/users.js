@@ -1,6 +1,10 @@
 module.exports = [
   {
-    email: 'john@arbuckle.com',
-    hash: 1234
+    name: 'Yagami, Taichi',
+    crest: 'Courage'
+  },
+  {
+    name: 'Ishida, Yamato',
+    crest: 'Friendship'
   }
 ];

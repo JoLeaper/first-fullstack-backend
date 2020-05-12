@@ -1,58 +1,92 @@
-// Auth
-const ensureAuth = require('./lib/auth/ensure-auth');
-const createAuthRoutes = require('./lib/auth/create-auth-routes');
-const authRoutes = createAuthRoutes({
-  selectUser(email) {
-    return client.query(`
-            SELECT id, email, hash, display_name as "displayName" 
-            FROM users
-            WHERE email = $1;
-        `,
-    [email]
-    ).then(result => result.rows[0]);
-  },
-  insertUser(user, hash) {
-    console.log(user);
-    return client.query(`
-            INSERT into users (email, hash, display_name)
-            VALUES ($1, $2, $3)
-            RETURNING id, email, display_name as "displayName";
-        `,
-    [user.email, hash, user.displayName]
-    ).then(result => result.rows[0]);
-  }
-});
-
-
-// setup authentication routes to give user an auth token
-// creates a /signin and a /signup route. 
-// each requires a POST body with a .email and a .password
-app.use('/api/auth', authRoutes);
-
-// everything that starts with "/api" below here requires an auth token!
-app.use('/api', ensureAuth);
-
-app.get('/api/test', (req, res) => {
-  res.json({
-    message: `in this proctected route, we get the user's id like so: ${req.userId}`
-  });
-});
+const app = require('./lib/app');
 require('dotenv').config();
 
 const client = require('./lib/client');
 
 // Initiate database connection
 client.connect();
-
-const app = require('./lib/app');
-
 const PORT = process.env.PORT || 7890;
 
 app.get('/digimon', async(req, res) => {
-  const data = await client.query('SELECT * from digimon');
-
+  const data = await client.query(`SELECT digimon_name, digimon_level, digimon_type, digimon_attribute, digimon_attack, appeared_in_anime, user_id, user_name
+  FROM digimon
+  JOIN users
+  ON users.id = user_id
+  `);
   res.json(data.rows);
 });
+
+app.get('/digimon/:id', async(req, res) => {
+  const id = req.params.id;
+  const result = await client.query(`
+  SELECT digimon.id, digimon_name, digimon_level, digimon_type, digimon_attribute, digimon_attack, appeared_in_anime, user_name AS partner 
+  FROM digimon
+  JOIN users
+  ON users.id = user_id
+  WHERE digimon.id = $1`,
+  [id]);
+  res.json(result.rows[0]);
+});
+
+app.get('/:attribute', async(req, res) => {
+  const attribute = req.params.attribute;
+  const data = await client.query(`SELECT digimon_name, digimon_level, digimon_type, digimon_attribute, digimon_attack, appeared_in_anime, user_id, user_name
+  FROM digimon
+  JOIN users
+  ON users.id = user_id
+  WHERE digimon_attribute ILIKE $1`,
+  [attribute]);
+  res.json(data.rows);
+});
+
+
+app.post('/digimon/', async(req, res) => {
+  const data = await client.query(`
+                                  INSERT INTO digimon (digimon_name, digimon_level, digimon_type, digimon_attribute, digimon_attack, appeared_in_anime, user_id)
+                                  VALUES ($1, $2, $3, $4, $5, $6, $7)
+                                  RETURNING *;
+              `,
+  [req.body.digimon_name, req.body.digimon_level, req.body.digimon_type, req.body.digimon_attribute, req.body.digimon_attack, req.body.appeared_in_anime, req.body.user_id]
+  );
+  res.json(data.rows[0]);
+});
+
+app.put('/digimon/:id', async(req, res) => {
+  const id = req.params.id;
+  const name = req.body.digimon_name;
+  const result = await client.query(`
+  UPDATE digimon
+  SET digimon_name = $1
+  WHERE digimon.id = $2`,
+  [name, id]);
+  res.json(result);
+});
+
+app.delete('/digimon/:id', async(req, res) => {
+  try {
+    const id = req.params.id;
+    const result = await client.query(`
+  DELETE FROM digimon
+  WHERE digimon.id = $1`,
+    [id]);
+    res.json(result);
+  } catch(e) {
+    console.log('hell');
+    console.log(e);
+  }
+});
+
+// app.put('/digimon/', async(req, res) => {
+//   const data = await client.query(`
+//                                   INSERT INTO digimon (digimon_name, digimon_level, digimon_type, digimon_attribute, digimon_attack, appeared_in_anime)
+//                                   VALUES ($1, $2, $3, $4, $5, $6)
+//                                   RETURNING *;
+//               `,
+//   [req.body.digimon_name, req.body.digimon_level, req.body.digimon_type, req.body.digimon_attribute, req.body.digimon_attack, req.body.appeared_in_anime]
+//   );
+//   res.json(data.rows[0]);
+// });
+
 
 app.listen(PORT, () => {
   // eslint-disable-next-line no-console
@@ -60,3 +94,4 @@ app.listen(PORT, () => {
 });
 
 module.exports = app;
+

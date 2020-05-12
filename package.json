@@ -1,7 +1,7 @@
 {
   "name": "first-fullstack-backend",
   "version": "1.0.0",
-  "description": "",
+  "description": "## Getting started 1. Change all the files in the `data` directory to match the data model of your app. 1. Run `heroku create` 1. Run `npm run setup-heroku` to create a heroku SQL database in the cloud to go with your heroku app. 1. Run `heroku config:get DATABASE_URL` to get your heroku sql database url from the cloud. Put this in your .env file, under `DATABASE_URL` 1. Run `npm run setup-db` 1. Run `npm run start:watch` to start the dev server",
   "main": "server.js",
   "scripts": {
     "test": "jest --verbose --runInBand",
@@ -31,11 +31,24 @@
     "supertest": "^4.0.2"
   },
   "dependencies": {
+    "bcryptjs": "^2.4.3",
     "cors": "^2.8.5",
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
+    "jsonwebtoken": "^8.5.1",
     "morgan": "^1.10.0",
     "pg": "^8.0.3",
     "superagent": "^5.2.2"
-  }
+  },
+  "directories": {
+    "lib": "lib"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/JoLeaper/first-fullstack-backend.git"
+  },
+  "bugs": {
+    "url": "https://github.com/JoLeaper/first-fullstack-backend/issues"
+  },
+  "homepage": "https://github.com/JoLeaper/first-fullstack-backend#readme"
 }
