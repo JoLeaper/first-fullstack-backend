@@ -16,17 +16,6 @@ app.get('/digimon', async(req, res) => {
   res.json(data.rows);
 });
 
-app.get('/:attribute', async(req, res) => {
-  const attribute = req.params.attribute;
-  const data = await client.query(`SELECT digimon_name, digimon_level, digimon_type, digimon_attribute, digimon_attack, appeared_in_anime, user_id, user_name
-  FROM digimon
-  JOIN users
-  ON users.id = user_id
-  WHERE digimon_attribute ILIKE $1`,
-  [attribute]);
-  res.json(data.rows);
-});
-
 app.get('/digimon/:id', async(req, res) => {
   const id = req.params.id;
   const result = await client.query(`
@@ -38,6 +27,18 @@ app.get('/digimon/:id', async(req, res) => {
   [id]);
   res.json(result.rows[0]);
 });
+
+app.get('/:attribute', async(req, res) => {
+  const attribute = req.params.attribute;
+  const data = await client.query(`SELECT digimon_name, digimon_level, digimon_type, digimon_attribute, digimon_attack, appeared_in_anime, user_id, user_name
+  FROM digimon
+  JOIN users
+  ON users.id = user_id
+  WHERE digimon_attribute ILIKE $1`,
+  [attribute]);
+  res.json(data.rows);
+});
+
 
 app.post('/digimon/', async(req, res) => {
   const data = await client.query(`
@@ -62,12 +63,17 @@ app.put('/digimon/:id', async(req, res) => {
 });
 
 app.delete('/digimon/:id', async(req, res) => {
-  const id = req.params.id;
-  const result = await client.query(`
+  try {
+    const id = req.params.id;
+    const result = await client.query(`
   DELETE FROM digimon
   WHERE digimon.id = $1`,
-  [id]);
-  res.json(result);
+    [id]);
+    res.json(result);
+  } catch(e) {
+    console.log('hell');
+    console.log(e);
+  }
 });
 
 // app.put('/digimon/', async(req, res) => {
