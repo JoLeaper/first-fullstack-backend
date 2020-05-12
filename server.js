@@ -53,12 +53,20 @@ app.post('/digimon/', async(req, res) => {
 app.put('/digimon/:id', async(req, res) => {
   const id = req.params.id;
   const name = req.body.digimon_name;
-  console.log(id, name);
   const result = await client.query(`
   UPDATE digimon
   SET digimon_name = $1
   WHERE digimon.id = $2`,
   [name, id]);
+  res.json(result);
+});
+
+app.delete('/digimon/:id', async(req, res) => {
+  const id = req.params.id;
+  const result = await client.query(`
+  DELETE FROM digimon
+  WHERE digimon.id = $1`,
+  [id]);
   res.json(result);
 });
 
